@@ -1,0 +1,3 @@
+[submodule "cgame"]
+	path = cgame
+	url = git@github.com:Samuka-C/cgame.git
