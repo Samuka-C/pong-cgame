@@ -35,6 +35,9 @@ private:
         auto width = getWidth();
         auto height = getHeight();
 
+        // show score
+        set_title(std::format("pong - ball speed: {}", ballSpeed));
+
         // enemy AI
         double paddleY;
         
@@ -75,7 +78,7 @@ private:
             auto randomAngleValue = 135 + (static_cast<double>(std::rand()) / RAND_MAX) * 90;
             auto newBallAngle = cgame::util::math::Angle::degrees(randomAngleValue);
 
-            ballSpeed += 20;
+            ballSpeed *= 2;
             ballSpeedVec = Vec2d(ballSpeed * newBallAngle.cos(), ballSpeed * newBallAngle.sin());
         }
 
@@ -90,7 +93,7 @@ private:
             }
             else
             {
-                set_title("GAME OVER!!! restart the game to play again");
+                set_title(std::format("GAME OVER!!! restart the game to play again. max ball speed: {}", ballSpeed));
                 gameOver = true;
             }
         }
