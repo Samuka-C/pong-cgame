@@ -11,8 +11,8 @@
 
 using namespace cgame::logger;
 
-// game constants
-const double ballSpeed = 200.0;
+// game values
+double ballSpeed = 200.0;
 const double playerPaddleSpeed = 300.0;
 
 class GameWindow : public cgame::ui::Window
@@ -75,6 +75,7 @@ private:
             auto randomAngleValue = 135 + (static_cast<double>(std::rand()) / RAND_MAX) * 90;
             auto newBallAngle = cgame::util::math::Angle::degrees(randomAngleValue);
 
+            ballSpeed += 20;
             ballSpeedVec = Vec2d(ballSpeed * newBallAngle.cos(), ballSpeed * newBallAngle.sin());
         }
 
