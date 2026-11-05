@@ -39,7 +39,7 @@ private:
         double paddleY;
         
         if (getHeight() > 100)
-            paddleY = std::clamp<double>(ball.get_position().y, 100, getHeight() - 100);
+            paddleY = std::clamp<double>(ball.get_position().y, 100, height - 100);
         else
             paddleY = getHeight() / 2;
 
@@ -47,6 +47,12 @@ private:
 
         // player control
         auto newLeftPaddleY = leftPaddle.get_position().y + leftPaddleYDeltaSpeed * deltaTimeSeconds;
+
+        if (getHeight() > 100)
+            newLeftPaddleY = std::clamp<double>(newLeftPaddleY, 100, height - 100);
+        else
+            newLeftPaddleY = height / 2;
+
         leftPaddle.set_position(10, newLeftPaddleY);
 
         // move ball
