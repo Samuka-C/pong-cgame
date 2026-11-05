@@ -1,15 +1,19 @@
+#include <Logger/logger.h>
 #include <UI/window.h>
 #include <Input/input.h>
 #include <Util/Math/angle.h>
 #include <Util/Math/vector.h>
 
+#include <format>
 #include <string>
 #include <random>
 #include <algorithm>
 
+using namespace cgame::logger;
+
 // game constants
-const double ballSpeed = 20.0;
-const double playerPaddleSpeed = 30.0;
+const double ballSpeed = 200.0;
+const double playerPaddleSpeed = 300.0;
 
 class GameWindow : public cgame::ui::Window
 {
@@ -19,7 +23,7 @@ private:
     cgame::ui::SolidColorObject ball;
     cgame::util::math::Vec2d ballSpeedVec;
     double leftPaddleYDeltaSpeed;
-    bool gameOver;
+    bool gameOver = false;
 
     // This is where the game loop happens
     void update(int frameTimeMiliseconds) override
@@ -62,11 +66,7 @@ private:
 
         if (ball.get_position().x >= width - 50 and ballSpeedVec.x > 0)  // enemy paddle
         {
-            auto randomAngleValue = 90 + (static_cast<double>(std::rand()) / RAND_MAX) * 180;
-            while (randomAngleValue == 90 or randomAngleValue == 270)
-            {
-                randomAngleValue = 90 + (static_cast<double>(std::rand()) / RAND_MAX) * 180;
-            }
+            auto randomAngleValue = 135 + (static_cast<double>(std::rand()) / RAND_MAX) * 90;
             auto newBallAngle = cgame::util::math::Angle::degrees(randomAngleValue);
 
             ballSpeedVec = Vec2d(ballSpeed * newBallAngle.cos(), ballSpeed * newBallAngle.sin());
@@ -76,17 +76,14 @@ private:
         {
             if ((ball.get_position().y <= newLeftPaddleY + 100 and ball.get_position().y >= newLeftPaddleY - 100))
             {
-                auto randomAngleValue = -90 + (static_cast<double>(std::rand()) / RAND_MAX) * 180;
-                while (randomAngleValue == 90 or randomAngleValue == -90)
-                {
-                    randomAngleValue = -90 + (static_cast<double>(std::rand()) / RAND_MAX) * 180;
-                }
+                auto randomAngleValue = -45 + (static_cast<double>(std::rand()) / RAND_MAX) * 90;
                 auto newBallAngle = cgame::util::math::Angle::degrees(randomAngleValue);
 
                 ballSpeedVec = Vec2d(ballSpeed * newBallAngle.cos(), ballSpeed * newBallAngle.sin());
             }
             else
             {
+                set_title("GAME OVER!!! restart the game to play again");
                 gameOver = true;
             }
         }
@@ -138,7 +135,6 @@ public:
         auto startingAngle = cgame::util::math::Angle::degrees(randomAngleValue);
 
         // set ball speed
-        auto ballSpeed = 20.0;
         ballSpeedVec = Vec2d(ballSpeed * startingAngle.cos(), ballSpeed * startingAngle.sin());
 
         // place the objects in the starting position
